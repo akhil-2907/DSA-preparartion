@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+ll multiply(ll num,vector<ll>&res,ll rs_size)
+{
+    ll carry =0;
+
+    for(ll i=0;i<rs_size;i++)
+    {
+        ll prod = res[i]*num+carry;
+        res[i]=prod%10;
+        carry=prod/10;
+    }
+    while(carry)
+    {
+        res[rs_size++]=carry%10;
+        carry = carry/10;
+    }
+    return rs_size;
+}
+
+int main()
+{
+    ll n;  cin>>n;
+    vector<ll>res(500);
+    res[0]=1;
+    ll rs_size =1;
+
+    for(ll i=2;i<=n;i++)
+    {
+        rs_size = multiply(i,res,rs_size);
+    }
+
+    for(ll i=rs_size-1;i>=0;i--)
+    {
+        cout<<res[i];
+    }
+
+}

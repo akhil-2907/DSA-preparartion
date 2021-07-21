@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+
+ll getans(vector<ll>&v,ll l , ll r)
+{
+    ll pivot = v[r];
+    ll i = l;
+
+    for(ll j=l;j<r;j++)
+    {
+        if(v[i]<=pivot)
+        {
+            swap(v[j],v[i]);
+            i++;
+        }
+    }
+    swap(v[i],v[r]);
+
+    return i;
+}
+
+ll solve(vector<ll>&v,ll l ,ll r,ll k)
+{
+    if(k>0 && k<=r-l+1)
+    {
+        ll pos = getans(v,l,r);
+        if(pos-l ==k-1 ) return v[pos];
+
+        if(pos-l>k-1) return solve(v,l,pos-1,k);
+
+        return solve(v,pos+1,r,k-pos+l-1);
+    }
+    return INT_MAX;
+}
+
+int main()
+{
+    ll n,k;
+    cin>>n>>k;
+    vector<ll>v(n);
+
+    for(auto &it : v)  cin>>it;
+
+    cout<<solve(v,0,n-1,k)<<endl;
+
+
+}

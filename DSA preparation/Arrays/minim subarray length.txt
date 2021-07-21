@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main()
+{
+    ll n,x;  cin>>n>>x;
+    vector<ll>v(n);
+
+    for(auto &it : v)  cin>>it;
+
+    ll ans = n+1;
+
+    ll l =0,r =0;
+    ll sum =0;
+
+    while(r<n)
+    {
+        while(sum<=x && r<n)
+        {
+            sum+=v[r++];
+        }
+
+        while(sum>x && l<n)
+        {
+            ans = min(ans,r-l);
+            sum-=v[l++];
+        }
+    }
+    cout<<ans<<endl;
+
+}

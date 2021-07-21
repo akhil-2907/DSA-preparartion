@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+struct point
+{
+    ll s,e;
+};
+
+bool cmp(point a, point b)
+{
+    return a.s<b.s;
+}
+
+int main()
+{
+    ll n;  cin>>n;
+    vector<point>v(n);
+
+    for(ll i=0;i<n;i++)
+    {
+        cin>>v[i].s>>v[i].e;
+    }
+    sort(v.begin(),v.end(),cmp);
+    
+    ll idx =0;
+
+    for(ll i=1;i<n;i++)
+    {
+        if(v[idx].e >=v[i].s)
+        {
+            v[idx].s = min(v[idx].s,v[i].s);
+            v[idx].e = max(v[idx].e,v[i].e);
+        }
+        else
+        {
+            idx++;
+            v[idx]=v[i];
+        }
+    }
+    cout<<"[";
+    for(ll i=0;i<=idx;i++)
+    {
+    	if(i==idx)
+        cout << "[" << v[i].s << "," << v[i].e << "]";
+        else
+        {
+         cout << "[" << v[i].s << "," << v[i].e << "]"<<",";
+         	
+        }
+       
+    }
+    cout<<"]";
+
+}

@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll dp[100001][10001];
+ll k,n;
+
+ll solve(vector<ll> &v, ll i,ll n)
+{
+    if(n==0) return true;
+
+    if(i==k) return false;
+
+    if(dp[i][n]!=-1) return dp[i][n];
+
+    if(v[i]>n) return dp[i][n]= solve(v,i+1,n)
+
+    return dp[i][n]= solve(v,i+1,n-v[i])|| solve(v,i+1,n);
+}
+
+int main()
+{
+  cin>>k>>n;
+    vector<ll>v;
+
+    for(auto &it : v)  cin>>it;
+    memset(dp,-1,sizeof(dp));
+
+    cout<<solve(v,0,n)<<endl;
+}

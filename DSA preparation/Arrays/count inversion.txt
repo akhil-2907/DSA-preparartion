@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+vector<ll>temp(100001);
+
+ll merge(vector<ll>&v,ll left, ll mid, ll right)
+{
+    ll count =0;
+    ll i = left;
+    ll j = mid;
+    ll k= left;
+
+    while((i<=mid-1 )&& (j<=right ))
+    {
+        if(v[i]<=v[j])
+        {
+            temp[k++] = v[i++];
+        }
+        else
+        {
+            count+=mid-i;
+            temp[k++] = v[j++];
+        }
+    }
+
+    while(i<=mid-1)
+    {
+        temp[k++]= v[i++];
+    }
+    while(j<=right)
+    {
+        temp[k++] = v[j++];
+    }
+
+    for (i = left; i <= right; i++)
+        v[i] = temp[i];
+        
+    return count;
+}
+
+ll solve(vector<ll>&v, ll left , ll right)
+{
+	ll count =0;
+	if(left<right)
+	{
+		ll mid = (left+right)/2;
+		count+=solve(v,left,mid);
+		count+=solve(v,mid+1,right);
+		
+		count+=merge(v,left,mid+1,right);
+	}
+	
+    return count;
+}
+
+int main()
+{
+    ll n;  cin>>n;
+    vector<ll>v(n);
+
+    for(auto &it : v)  cin>>it;
+
+    cout<<solve(v,0,n-1)<<endl;
+
+    for(ll i=0;i<n;i++) cout<<temp[i]<<" ";
+}

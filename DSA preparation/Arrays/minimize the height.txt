@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main()
+{
+    ll n,k;   cin>>n>>k;
+
+    vector<ll>arr(n);
+
+    for(auto &it : arr)  cin>>it;
+
+    ll result = arr[n-1]-arr[0];
+    ll _max =0,_min =0;
+    sort(arr.begin(),arr.end());
+
+    for(ll i=1;i<n;i++)
+    {
+        _max = max(arr[i-1]+k,arr[n-1]-k);
+        _min = min(arr[0]+k,arr[i]-k);
+
+        result = min(result, _max-_min);
+    }
+    cout<<result<<endl;
+
+}

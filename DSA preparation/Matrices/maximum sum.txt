@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main()
+{
+    ll n;  cin>>n;
+    vector<ll>v(n);
+
+    for(auto &it : v)  cin>>it;
+
+    ll i =0;
+    stack<ll>s;
+    ll ans =0;
+    while(i<n)
+    {
+        if(s.empty()||v[s.top()]<=v[i])
+        {
+            s.push(i++);
+        }
+        else
+        {
+            ll x = s.top();
+            s.pop();
+            if(s.empty())
+            {
+                ans = max(ans,v[x]*i);
+            }
+            else
+            {
+                ans = max(ans,v[x]*(i-s.top()-1));
+            }
+        }
+    }
+    while(!s.empty())
+    {
+        ll x= s.top();
+        s.pop();
+        if(s.empty())
+        {
+            ans = max(ans,v[x]*i);
+        }
+        else
+        {
+            ans = max(ans,v[x]*(i-s.top()-1));
+        }
+       
+    }
+    cout<<ans<<endl;
+
+}

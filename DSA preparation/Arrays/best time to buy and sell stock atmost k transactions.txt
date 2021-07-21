@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll dp[1001][3][2];
+vector<ll>v(1001);
+ll n;
+
+ll solve(ll i,ll j,ll own)
+{
+    if(j==0) return 0;
+
+    if(i==n) return INT_MIN;
+
+    if(dp[i][j][own]!=-1) return dp[i][j][own];
+
+    if(own==0)
+    {
+         dp[i][j][own]= max(solve(i+1,j,1)-v[i],solve(i+1,j,0));
+    }
+    
+    else dp[i][j][own]=max(v[i]+solve(i+1,j-1,0),solve(i+1,j,1));
+    
+    cout<<i<<" "<<j<<" "<<own<<" "<<dp[i][j][own]<<endl;
+    
+    return dp[i][j][own];
+            
+}
+int main()
+{
+    cin>>n;
+    memset(dp,-1,sizeof(dp));
+
+    for(ll i=0;i<n;i++)
+    {
+        cin>>v[i];
+    }
+    cout<<solve(0,2,0)<<endl;
+
+}

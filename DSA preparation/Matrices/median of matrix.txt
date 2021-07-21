@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll n,m;
+ll count(vector<vector<ll>>&v,ll x)
+{
+   
+    ll cnt =0;
+    ll ans =0;
+    for(ll i=0;i<n;i++)
+    {
+    	//cout<<"a"<<endl;
+    	ll l=0, r= m;
+        while(l<=r)
+        {
+            ll mid =(l+r)/2;
+            if(v[i][mid]<=x)
+            {
+                ans = mid;
+                l = mid+1;
+            }
+            else r = mid-1;
+        }
+        cnt+=ans;
+    }
+    return cnt;
+    
+}
+
+int main()
+{
+      cin>>n>>m;
+    vector<vector<ll>>v(n,vector<ll>(m));
+
+    for(ll i=0;i<n;i++)
+    {
+        for(ll j=0;j<m;j++)
+        {
+            cin>>v[i][j];
+        }
+    }
+    ll total = (n*m)/2;
+
+    ll l= 0, r = 1e9;
+    ll ans = 0;
+    while(l<=r)
+    {
+        ll mid = (l+r)/2;
+        ll cnt = count(v,mid);
+        //cout<<mid<<" "<<cnt<<endl;
+        if(cnt>=(total)/2)
+        {
+            ans = mid;
+            r =mid-1;
+        }
+        else l =mid+1;
+    }
+    cout<<ans<<endl;
+    
+}
