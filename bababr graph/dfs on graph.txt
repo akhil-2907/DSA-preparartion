@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll n,m; 
+vector<ll>v[100];
+ll vis[100];
+
+void dfs(ll node,ll par)
+{
+    for(auto child : v[node])
+    {
+        if(child!=par)
+        {
+            dfs(child,node);
+        }
+    }
+}
+int main()
+{
+     cin>>n>>m;
+     memset(vis,0,sizeof(vis));
+
+     for(ll i=0;i<m;i++)
+     {
+         ll a,b;  cin>>a>>b;
+         v[a].push_back(b);
+         v[b].push_back(a);
+     }
+     dfs(1,-1);
+}

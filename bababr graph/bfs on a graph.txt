@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll n,m; 
+vector<ll>v[100];
+ll vis[100];
+
+void bfs(ll node)
+{
+    vis[node]=1;
+    queue<ll>q;
+    q.push(node);
+
+    while(!q.empty())
+    {
+        ll x = q.front();
+        q.pop();
+
+        for(auto i : v[x])
+        {
+            if(vis[i]==0)
+            {
+                q.push(i);
+                vis[i]=1;
+            }
+        }
+    }
+
+}
+int main()
+{
+     cin>>n>>m;
+     memset(vis,0,sizeof(vis));
+
+     for(ll i=0;i<m;i++)
+     {
+         ll a,b;  cin>>a>>b;
+         v[a].push_back(b);
+         v[b].push_back(a);
+     }
+     bfs(1);
+}

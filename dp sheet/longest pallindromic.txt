@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main()
+{
+    ll n;  cin>>n;
+    string s; cin>>s;
+
+    ll dp[n+1][n+1];
+    for(ll i=0;i<n;i++)
+    {
+        dp[i][i]=1;
+    }
+    for(ll gap =1;gap<n;gap++)
+    {
+        for(ll i=0;i+gap<n;i++)
+        {
+            ll j= i+gap;
+            if(s[i]==s[j])
+            {
+                dp[i][j]=2+dp[i+1][j-1];
+            }
+            else dp[i][j]=max(dp[i+1][j],dp[i][j-1]);
+        }
+    }
+    cout<<dp[0][n-1]<<endl;
+}

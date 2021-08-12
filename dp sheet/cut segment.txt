@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+int main()
+{
+    ll n;  cin>>n;
+    ll x,y,z;   cin>>x>>y>>z;
+
+    ll dp[n+1];
+
+    dp[0]=0;
+
+    for(ll i=1;i<=n;i++)
+    {
+        ll ans = INT_MIN;
+        if(i>=x) ans = max(ans,1+dp[i-x]);
+        if(i>=y) ans = max(ans,1+dp[i-y]);
+        if(i>=z) ans = max(ans,1+dp[i-z]);
+
+        dp[i]=ans;
+    }
+    cout<<dp[n]<<endl;
+}

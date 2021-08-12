@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+vector<ll>v[10001];
+vector<ll>visited(10001,0);
+
+bool dfs(ll node,ll par)
+{
+    visited[node]=1;
+    for(auto child :v[node])
+    {
+        if(visited[child])
+        {
+            if(child!=par)
+            {
+                return true;
+            }
+        }
+        
+        if(child!=par)
+        {
+            return dfs(child,par);
+        }
+    }
+    return false; 
+}
+int main()
+{
+    ll n,m;  cin>>n>>m;
+    while(m--)
+    {
+        ll a, b; cin>>a>>b;
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+
+    dfs(1,-1);
+}
