@@ -1,0 +1,156 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+const ll N=5e4+5;
+const ll M=1e9+7;
+vector<ll>v[N],values(N),a(N);
+ll st[4*N+1] , lazy[4*N+1];
+ll start[N],endt[N];
+ 
+ll cnt=0;
+ 
+ll powd(ll a, ll n)
+{
+	ll p = 1;
+	while(n)
+	{
+		if(n&1)
+			p = 1ll*p*a%M;
+		a = 1ll*a*a%M;
+		n >>= 1;
+	}
+	return p;   
+}
+void dfs(ll node, ll par)
+{
+    ++cnt;
+    start[node]=cnt;
+    values[start[node]]=a[node];
+    for(auto child:v[node])
+    {
+        if(child!=par)
+        {
+            dfs(child,node);
+        }
+    }
+    endt[node]=cnt;
+}
+void build(int si , int ss , int se)
+{
+	if(ss == se)
+	{
+		st[si] = values[ss];
+		return;
+	}
+ 
+	int mid = (ss + se) / 2;
+ 
+	build(2*si , ss , mid);
+	build(2*si+1 , mid+1 , se);
+ 
+	st[si] = (1ll*st[2*si] *st[2*si+1])%M;
+}
+void update( ll si , ll ss , ll se , ll qs , ll qe , ll val)
+{
+	if(lazy[si] != 1)
+	{
+		ll dx = lazy[si];
+		lazy[si] = 1;
+		st[si] = (1ll*powd(dx,(se - ss + 1))*st[si])%M;
+ 
+		if(ss != se)
+		lazy[2*si] = (1ll*lazy[2*si]*dx) , lazy[2*si+1] = (1ll*dx*lazy[2*si+1])%M;
+	}
+ 
+	if(ss > qe || se < qs) return;
+ 
+	if(ss >= qs && se <= qe)
+	{
+		ll dx = powd(val,se - ss + 1);
+		st[si] = (1ll*st[si]*dx)%M;
+ 
+		if(ss != se)
+		lazy[2*si] = (1ll*lazy[2*si]*val)%M , lazy[2*si+1] = (1ll*lazy[2*si+1]*val)%M;
+		return;
+	}
+ 
+	ll mid = (ss + se) / 2;
+	update(2*si , ss , mid , qs , qe , val);
+	update(2*si+1 , mid+1 , se , qs , qe , val);
+ 
+	st[si] = (1ll*st[2*si] * st[2*si+1])%M;
+}
+ 
+ll query(ll si , ll ss , ll se , ll qs , ll qe)
+{
+	if(lazy[si] != 1)
+	{
+		ll dx = lazy[si];
+		lazy[si] = 1;
+		st[si] = (1ll*st[si]*powd(dx ,(se - ss + 1)))%M;
+ 
+		if(ss != se)
+		lazy[2*si] =(1ll*lazy[2*si]*dx)%M , lazy[2*si+1] = (1ll*lazy[2*si+1]*dx)%M;
+	}
+ 
+	if(ss > qe || se < qs) return 1;
+ 
+	if(ss >= qs && se <= qe)
+	return st[si]%M;
+ 
+	ll mid = (ss + se) / 2;
+	return (query(2*si , ss , mid , qs , qe) * query(2*si+1 , mid+1 , se , qs , qe)*1ll)%M;
+}
+ 
+int main()
+{
+    ll n,q; cin>>n>>q;
+    
+    for(ll i=0;i<=4*N+1;i++)
+    {
+    	lazy[i]=1;
+    	st[i]=1;
+    	
+    }
+ 
+    for( ll i=1;i<=n;i++)
+    {
+        cin>>a[i];
+    }
+ 
+    for(ll i=1;i<n;i++)
+    {
+        ll a,b;  cin>>a>>b;
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+    dfs(1,-1);
+    build(1,1,n);
+    //for(auto i : st) cout<<i<<" ";
+    while(q--)
+    {
+    	ll code,x,v;
+    	cin>>code;
+    	
+    	if(code==1)
+    	{
+    		cin>>x>>v;
+    		update(1 , 1 , n , start[x] , endt[x] , v);
+    	}
+    	if(code==2)
+    	{
+    		cin>>x>>v;
+    		update(1 , 1 , n , start[x] , endt[x] , powd(v,M-2));
+    	}
+    	if(code==3)
+    	{
+    		cin>>x;
+    		//cout<<start[x]<<" "<<endt[x]<<endl;
+    		
+			cout<<query(1 , 1 , n , start[x] ,endt[x])%M<<endl;
+    		
+    	}
+    }
+    
+ 
+}

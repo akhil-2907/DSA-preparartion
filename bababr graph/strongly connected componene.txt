@@ -1,0 +1,69 @@
+// strongly connected comnponenets
+ 
+#include<bits/stdc++.h>
+using namespace std;
+ 
+vector<int>v[1001],u[1001];
+vector<int>order;
+int visited[1001];
+int col;
+int setm[1001];
+//
+void dfs(int node)
+{
+    visited[node] =1;
+    for(auto i : v[node])
+    {
+        if(!visited[i])
+        {
+            dfs(i);
+        }
+    }
+    order.push_back(node);
+}
+ 
+void dfs2(int node,int col)
+{
+    visited[node]=1;
+    setm[node]=col;
+ 
+    for(auto i:u[node])
+    {
+        if(!visited[i])
+        {
+            dfs2(i,col);
+        }
+    }
+}
+ 
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++) 
+    {
+        visited[i]=0;
+        setm[i]=0;
+    }
+    for(int i=1;i<=m;i++)
+    {
+        int a,b;  cin>>a>>b;
+        v[a].push_back(b);
+        u[b].push_back(a);
+    }
+    dfs(1);
+    memset(visited,0,sizeof(visited));
+     col =1;
+ 
+    for(int i=n-1;i>=0;i--)
+    {
+        if(!visited[order[i]])
+        {
+            dfs2(order[i],col);
+            col++;
+        }
+ 
+    }
+ 
+    for(int i=1;i<=n;i++) cout<<i<<" "<<setm[i]<<endl;
+}

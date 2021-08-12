@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+ 
+const ll N= 2e5+1;
+ 
+set<ll>*s[N];
+vector<ll>v[N];
+vector<ll>val(N),res(N);
+ 
+void dfs( ll node, ll par)
+{
+    ll mx =0,big =-1;
+ 
+    for(auto child : v[node])
+    {
+        if(child!=par)
+        {
+            dfs(child,node);
+            if(s[child]->size()>mx)
+            {
+                mx = s[child]->size();
+                big = child;
+            }
+        }
+    }
+    if(big==-1)// leaf node
+    {
+        s[node]= new set<ll>();
+    }
+ 
+    else s[node]=s[big];
+ 
+    s[node]->insert(val[node]);
+ 
+    for(auto child : v[node])
+    {
+        if(child!=par && child!= big)
+        {
+            for(auto color : *s[child])
+            {
+                s[node]->insert(color);
+            }
+        }
+    }
+    res[node]=s[node]->size();
+ 
+}
+int main()
+{
+    ll n;  cin>>n;
+ 
+    for(ll i=1;i<=n;i++)
+    {
+        cin>>val[i];
+    }
+    for(ll i=1;i<n;i++)
+    {
+        ll a,b;  cin>>a>>b;
+        v[a].push_back(b);
+        v[b].push_back(a);
+    }
+    dfs(1,-1);
+    for(ll i=1;i<=n;i++)
+    {
+        cout<<res[i]<<" ";
+    }
+ 
+ 
+}
