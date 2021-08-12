@@ -1,0 +1,40 @@
+#define ll long long
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& v, int k) {
+    ll n = v.size();
+    ll m = v[0].size();
+    
+    ll l=0,r=n-1;
+    ll ans =0;
+
+    while(l<=r)
+    {
+        ll mid = (l+r)/2;
+
+        if(v[mid][0]<=k)
+        {
+            ans = mid;
+            l = mid+1;
+        }
+        else r = mid-1;
+    }
+    ll pos =ans;
+    l=0 , r=m-1;
+    ans =0;
+
+    while(l<=r)
+    {
+        ll mid = (l+r)/2;
+        if(v[pos][mid]<=k)
+        {
+            ans =mid;
+            l = mid+1;    
+        }
+        else r = mid-1;
+    }
+    if(v[pos][ans]!=k) return false;
+    else return true;
+        
+    }
+};

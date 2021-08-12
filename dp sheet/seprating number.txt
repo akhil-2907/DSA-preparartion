@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+vector<pair<ll,ll>>vect;
+stack<ll>st,rt;
+ 
+map<ll,ll>mp[300001];
+int parent[300001];
+int col[100001];
+int find(int a)
+{
+  if(parent[a]==a) return a;
+ 
+  return parent[a]=find(parent[a]);
+}
+long merge(int a,int b)
+{   ll res=0;
+ 
+  if(mp[a].size()<mp[b].size())  swap(a,b);
+  for(pair<ll,ll> p :mp[b])
+  {
+     if(mp[a].find(p.first)==mp[a].end())     
+        mp[a].insert({p.first,p.second});
+ 
+        else
+        {
+          res+= mp[a][p.first]*p.second;
+          mp[a][p.first]+=p.second;
+        }
+ 
+  }
+  parent[b]=a;
+  return res;
+}
+int main()
+{
+  int n;  cin>>n;
+ 
+  for(int i=1;i<=n;i++)   parent[i]=i;
+ 
+  for(int i=1;i<n;i++)
+  {
+    int a,b;
+    cin>>a>>b;
+    vect.push_back({a,b});
+  }
+  for(int i=1;i<=n;i++) {
+     cin>>col[i];
+     mp[i].insert({col[i],1});
+  }  
+  for(int i=1;i<n;i++)
+  {int a; cin>>a;
+    st.push(a);
+  }
+  while(!st.empty())
+  {
+    int r =st.top();
+    st.pop();
+    int a =vect[r-1].first;
+    int b=vect[r-1].second;
+   rt.push( merge (find(a),find(b)));
+  }
+  while(!rt.empty())
+  {
+    cout<<rt.top()<<endl;
+    rt.pop();
+  }
+ 
+}

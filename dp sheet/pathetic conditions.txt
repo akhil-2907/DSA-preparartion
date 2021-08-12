@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+vector<int>vect[101];
+int col[101];
+int clr[2];
+int visited[101];
+long ProdOfPrimes(int n) 
+{ 
+    bool prime[n + 1]; 
+ 
+    memset(prime, true, n + 1); 
+ 
+    for (int p = 2; p * p <= n; p++) { 
+ 
+        if (prime[p] == true) { 
+ 
+            for (int i = p * 2; i <= n; i += p) 
+                prime[i] = false; 
+        } 
+    } 
+ 
+    long prod = 1; 
+    for (int i = 2; i <= n; i++) 
+        if (prime[i]) 
+            prod *= i; 
+    return prod; 
+}  
+bool dfs(int node,int c)
+{
+  visited[node]=1;
+  col[node]= clr[c];
+  for(auto child:vect[node])
+  {
+    if(visited[child]==0){
+   bool res =dfs(child,c^1);
+   if(res==false) return false;
+    }
+   else{
+     if(col[child]==col[node])
+     return false;
+   }
+  }
+  return true;
+}
+ 
+int main()
+{
+  int t ; cin>>t;
+  while(t--)
+  {
+    int n;  cin>>n;
+    int k = ProdOfPrimes(n); 
+    for(int i=1;i<101;i++)
+    {
+      vect[i].clear();
+      col[i]=0;
+      visited[i]=0;
+    }
+    clr[0]=k/2;
+    clr[1]=k/clr[0];
+    for(int i=1;i<n;i++)
+    {
+      int a,b;
+      cin>>a>>b;
+      vect[a].push_back(b);
+      vect[b].push_back(a);
+    }
+    bool flag=true;
+   for(int i=1;i<=n;i++)
+   {
+     if(visited[i]==0)
+     {
+      if( dfs(1,0)==false)
+      flag =false;
+     }
+   }
+     if(flag==false) cout<<false;
+     else
+     {
+       for(int i:col)
+       {
+         if(i!=0)
+       cout<<(char)i<<" ";
+       }
+     }
+     cout<<endl;
+  }
+ 
+}

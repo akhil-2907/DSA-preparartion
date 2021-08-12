@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define   ll long long
+
+bool is_valid(string s,ll i,ll j)
+{
+     while (j>i) 
+    { 
+        if (s[i++] != s[j--]) 
+        { 
+            return false;
+        
+        } 
+    } 
+    return true;
+}
+
+ll solve(string s, ll i, ll j)
+{
+    if(i==j) return 0;
+
+    if(is_valid(s,i,j)) return 0;
+
+    ll ans = INT_MAX;
+    for( ll k=i;k<j;k++)
+    {
+        ans = min( ans,1 + solve(s,i,k)+solve(s,k+1,j));
+    }
+    return ans;
+}
+
+int main()
+{
+    string s; cin>>s;
+    ll n = s.length();
+
+    cout<<solve(s,0,n-1);
+}
